@@ -1,0 +1,13 @@
+#!/bin/bash
+
+DIR=$1
+SIZE=$2
+IMAGE=$3
+
+dd of=$IMAGE if=/dev/zero bs=1 count=0 seek=$SIZE
+mkfs.ext2 $IMAGE
+mkdir /tmp/mnt
+mount $IMAGE /tmp/mnt
+cp -r `find $DIR -maxdepth 1 -mindepth 1 |grep -v "/dev$"` /tmp/mnt
+umount /tmp/mnt
+rmdir /tmp/mnt
